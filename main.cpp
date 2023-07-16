@@ -1,69 +1,92 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
-
-#include<iostream>
+#include <iostream>
 #include <prglib.h>
-#include <libs/conjunto.h>
+#include <string>
+#include "projeto2.h"
 
 using namespace std;
 using namespace prglib;
- 
+
+
+string ler_escolha(string & escolha) {
+    cout << "Digite: ";
+
+    while(true){
+        getline(cin,escolha);
+        if(escolha.size() != 0)break;
+    }
+    cout << endl;
+
+    return escolha;
+}
+
+
 int main() {
-    /*
-    //Exemplo para criar um conjunto.
-    auto conjunto_exemplo = new conjunto<int> (100);
-    //Adicionar dados ao conjuntos.
-    conjunto_exemplo->adicionar(20);
-    conjunto_exemplo->adicionar(50);
-    conjunto_exemplo->adicionar(80);
-    conjunto_exemplo->adicionar(7);
-    //Para extrair os dados de um conjunto deve se passar uma lista como parâmetro,em seguida chamar a função eXtrair que
-    // ira armazenar os dados que existem. Para mostrar os dados do conjunto basta chamar a função escrevaSe() da lista.
-    lista<int> lista_exemplo; //criando lista para passar como parâmetro.
-    conjunto_exemplo->eXtrair(lista_exemplo); //Chamando função para extrair os dados do conjunto.
-    lista_exemplo.escrevaSe(cout); //Imprimindo na tela os dados do conjunto.
-    cout << endl;
-    cout << endl;
-    //Remover um dado do conjunto.
-    //Para remover um dado do conjunto, basta passar como parâmetro um dado e ira ser removido do conjunto, caso o dado
-    //não existir no conjunto, uma exceção será lançada.
-    conjunto_exemplo->remover(100); //dado a ser removido.
-    lista_exemplo.esvazia();
-    conjunto_exemplo->eXtrair(lista_exemplo); //extraindo dados do conjunto.
-    lista_exemplo.escrevaSe(cout); //Imprimindo dados do conjunto.
-    cout << endl;
-    cout << endl;
-    //Testa se determinado dado existe no conjunto.
-    bool booleano;
-    booleano = conjunto_exemplo->existe(50);
-    if(booleano) cout << "50 existe no conjunto" << endl;
-    else cout << "50 não existe no conjuto" << endl;
-    //Testes uniao e intersecção.
-    auto conj1 = new conjunto<int> (5);
-    conj1->adicionar(3);
-    conj1->adicionar(10);
-    conj1->adicionar(4);
-    conj1->adicionar(7);
-    auto conj2 = new conjunto<int> (15);
-    conj2->adicionar(13);
-    conj2->adicionar(20);
-    conj2->adicionar(4);
-    conj2->adicionar(7);
-    auto conj3 = conj1->uniao(conj2);
-    lista<int> l;
-    conj3->eXtrair(l);
-    l.escrevaSe(cout);
-    cout << endl;
-    cout << endl;
-    auto conj4 = conj1->interseccao(conj2);
-    l.esvazia();
-    conj4->eXtrair(l);
-    l.escrevaSe(cout);
-    cout << endl;
-    cout << endl;
-*/
+    
+    cout << "Programa de estatísticas sobre atores e filmes inciado..." << endl;
+
+    lista <info_filme> Mapa = Leitura_arquivo();
+
+    cout << "MENU: " << endl << "1 - Os filmes em que um ator atuou." << endl;
+    cout << "2- Os atores que atuaram em um dado filme." << endl << "3 - Os atores que trabalharam com um dado ator." << endl;
+    cout << "4 - A listagem ordenada de atores, de acordo com a quantidade de filmes em que atuaram." << endl << "5 - Para um dado ator, a listagem ordenada de atores de acordo com a quantidade de filmes em que atuaram em comum." << endl;
+
+    string opcao;
+    int conv = 0; 
+    cout << "Digite a opção: ";
+    while(true) {
+        getline(cin,opcao);
+        conv = stoi(opcao);
+        if(conv <= 5 && conv != 0)break;
+    }
+    
+    string escolha; 
+    lista <info_filme> search_filmes; 
+    lista <string> search_atores; 
+    lista <string> busca_ator; 
+    lista <papeis> list_ator; 
+    lista <comum> list_comum; 
+
+    switch (conv) {
+
+        case 1:
+            cout << "Busca de filmes em que um ator atuou; digite inicialmente o nome de um ator." << endl;
+            ler_escolha(escolha);
+            funcao_um(escolha, "", Mapa);
+            break;
+
+        case 2:
+            cout << "Busca de atores que atuaram em um dado filme; digite inicialmente o nome de um filme." << endl;
+            ler_escolha(escolha);
+            lista<string> filmes;
+            filmes.anexa(escolha);
+            funcao_dois(filmes, Mapa);
+            break;
+
+        case 3:
+            cout << "Busca dos atores que trabalharam com um dado ator; digite inicialmente o nome de um ator." << endl;
+            ler_escolha(escolha);
+            lista<string> atores;
+            atores.anexa(escolha);
+            funcao_dois(atores, Mapa);
+            break;
+
+        case 4:
+            cout << "A listagem ordenada de atores, de acordo com a quantidade de filmes em que atuaram." << endl;
+            lista<string> todos_atores;
+            todos_atores.inicia();
+            todos_atores.escrevaSe(cout);
+            funcao_dois(todos_atores, Mapa);
+            break;
+
+        case 5:
+            cout << "A listagem ordenada de atores de acordo com a quantidade de filmes em que atuaram em comum; digite o ator." << endl;
+            ler_escolha(escolha);
+            funcao_um(escolha, "", Mapa);
+            break;
+
+    }
+
+    //Fim do programa.
+    return 0;
 
 }
